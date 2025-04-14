@@ -15,7 +15,7 @@ config.ini
 *.cfg
 
 # Data files with sensitive information
-data
+data/
 data/*.json
 
 # Other common Python ignores
