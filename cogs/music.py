@@ -86,7 +86,7 @@ class MusicCog(commands.Cog):
 
     # Core commands
 
-    @app_commands.command(name="join", description="Make the bot join your current voice channel")
+    @app_commands.command(name="join_channel", description="Make the bot join your current voice channel")
     async def join(self, interaction: discord.Interaction):
         voice_state = interaction.user.voice
         if not voice_state or not voice_state.channel:
@@ -110,7 +110,7 @@ class MusicCog(commands.Cog):
         
         await interaction.response.send_message(f"✅ Joined {channel.name}!")
 
-    @app_commands.command(name="leave", description="Make the bot leave the voice channel")
+    @app_commands.command(name="leave_channel", description="Make the bot leave the voice channel")
     async def leave(self, interaction: discord.Interaction):
         if interaction.guild.voice_client:
             guild_id = interaction.guild.id
@@ -124,7 +124,7 @@ class MusicCog(commands.Cog):
         else:
             await interaction.response.send_message("❌ I'm not in a voice channel.")
 
-    @app_commands.command(name="play", description="Play a song from URL or search term")
+    @app_commands.command(name="play_url", description="Play a song from URL or search term")
     @app_commands.describe(query="YouTube URL or search term")
     async def play(self, interaction: discord.Interaction, query: str):
         voice_state = interaction.user.voice
@@ -201,7 +201,7 @@ class MusicCog(commands.Cog):
         except Exception as e:
             await interaction.followup.send(f"❌ Error processing your request: {str(e)}")
 
-    @app_commands.command(name="save", description="Save current queue as a playlist")
+    @app_commands.command(name="save_queue_as_playlist", description="Save current queue as a playlist")
     @app_commands.describe(name="name for the saved playlist")
     async def save_playlist(self, interaction: discord.Interaction, name: str):
         guild_id = interaction.guild.id
@@ -224,7 +224,7 @@ class MusicCog(commands.Cog):
         await interaction.response.send_message(f"✅ Saved current queue as playlist: `{name}`", ephemeral=True)
 
 
-    @app_commands.command(name="load", description="Load a saved playlist")
+    @app_commands.command(name="load_playlist", description="Load a saved playlist")
     @app_commands.describe(name="name of the playlist to load")
     async def load_playlist(self, interaction: discord.Interaction, name: str):
         guild_id = interaction.guild.id
@@ -253,7 +253,7 @@ class MusicCog(commands.Cog):
 
     
     # Additional commands...
-    @app_commands.command(name="controls", description="Show music player controls")
+    @app_commands.command(name="show_music_controls", description="Show music player controls")
     async def controls_command(self, interaction: discord.Interaction):
         guild_id = interaction.guild.id
         voice_client = interaction.guild.voice_client
