@@ -1,0 +1,33 @@
+# Virtual Environment
+.venv/
+**/pyenv.cfg
+
+# Python cache files
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+**/*.py[cod]
+**/*$py.class
+
+# Configuration files with sensitive data
+config.ini
+*.cfg
+
+# Other common Python ignores
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
