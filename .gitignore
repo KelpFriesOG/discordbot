@@ -14,6 +14,10 @@ __pycache__/
 config.ini
 *.cfg
 
+# Data files with sensitive information
+data/
+data/*.json
+
 # Other common Python ignores
 *.so
 .Python
