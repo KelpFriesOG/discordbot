@@ -14,21 +14,31 @@ class ModerationCog(commands.Cog):
 
         member = interaction.user if isinstance(interaction.user, Member) else interaction.guild.get_member(interaction.user.id)
 
+        # Ensure the interaction's end user is a guild member
         if not member:
             await interaction.response.send_message("Could not fetch your member info.", ephemeral=True)
             return
-        
-        has_role = utils.get(member.roles, name="moderator")
-        is_owner = member.id == interaction.guild.owner_id
 
-        if not (has_role or is_owner):
-            await interaction.reponse.send_message("You don't have permission to use this command")
+        # Check if the user has permission to manage messages
+        if not (member.guild_permissions.manage_messages or member.id == interaction.guild.owner_id):
+            await interaction.response.send_message("❌ You don't have permission to use this command.", ephemeral=True)
             return
 
+        # Ensure the command is being used in a text channel        
         if not isinstance(interaction.channel, TextChannel):
-            await interaction.response.send_message("This command can only be used in text channels")
+            await interaction.response.send_message("This command can only be used in text channels", ephemeral=True)
             return
 
-        # Delete some messages
-        await interaction.response.send_message(f"🧹 Deleting {n_messages} messages.", ephemeral=True)
-        deleted_messages = await interaction.channel.purge(limit=n_messages+1)
+        # Validate n_messages is in acceptable range
+        if n_messages < 1 or n_messages > 100:
+            await interaction.response.send_message("Please provide a number between 1 and 100.", ephemeral=True)
+            return
+
+        # After validating checks go ahead and delete 'em.
+        try:
+            await interaction.response.send_message(f"🧹 Deleting {n_messages} messages...", ephemeral=True)
+            deleted = await interaction.channel.purge(limit=n_messages + 1)  # +1 to include the command itself if visible
+        except Exception as e:
+            await interaction.followup.send(f"⚠️ Failed to delete messages: {e}", ephemeral=True)
+
+    
